@@ -1,6 +1,6 @@
-
 // src/app/customers/check/page.jsx
 import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
+import Link from "next/link"; // ✅ Linkコンポーネントをインポート
 
 export const dynamic = "force-dynamic";
 
@@ -31,10 +31,10 @@ export default async function Page({ searchParams }) {
     <>
       <OneCustomerInfoCard {...customerInfo} />
       <div className="mt-4">
-        {/* ✅ ここを <a> の開始タグ＋終了タグで囲む */}
-        /customers
+        {/* ✅ <Link> 開始タグを追加し、リンク先を指定します */}
+        <Link href="/customers" className="btn btn-secondary">
           一覧に戻る
-        </a>
+        </Link>
       </div>
     </>
   );
