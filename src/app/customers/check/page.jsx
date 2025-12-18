@@ -12,7 +12,7 @@ async function fetchCustomer(id) {
   return res.json();
 }
 
-export defualt async function ReadPage ({ searchParams }) {
+export default async function ReadPage ({ searchParams }) {
   const id = searchParams?.id;  if (!id) {
     return (
       <div className="alert alert-error">        
