@@ -1,23 +1,19 @@
+
 // src/app/customers/check/page.jsx
 import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
 
 export const dynamic = "force-dynamic";
 
-// 顧客情報の取得（必要に応じてパスや戻り値を調整）
 async function fetchCustomer(id) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/customers?customer_id=${id}`,
     { cache: "no-store" }
   );
-  if (!res.ok) {
-    throw new Error("Failed to fetch customer");
-  }
+  if (!res.ok) throw new Error("Failed to fetch customer");
   return res.json();
 }
 
-// ✅ Server Component（"use client" は付けない）
 export default async function Page({ searchParams }) {
-  // Next.js 15 では searchParams は非同期扱いのため await 推奨
   const sp = await searchParams;
   const id = sp?.id;
 
@@ -35,7 +31,7 @@ export default async function Page({ searchParams }) {
     <>
       <OneCustomerInfoCard {...customerInfo} />
       <div className="mt-4">
-        {/* ✅ 開始タグを追加し、JSX の < と > を使用 */}
+        {/* ✅ ここを <a> の開始タグ＋終了タグで囲む */}
         /customers
           一覧に戻る
         </a>
@@ -43,4 +39,3 @@ export default async function Page({ searchParams }) {
     </>
   );
 }
-``
