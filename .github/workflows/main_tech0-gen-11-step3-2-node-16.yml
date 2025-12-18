@@ -21,7 +21,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: npm install, build, and test
       #1
@@ -67,5 +67,6 @@ jobs:
           package: release.zip #4
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_889C6339F01A42E0BAA626791C88D659 }}
+
 
 
