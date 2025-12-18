@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir deploy
           cp -r ./.next/standalone/. ./deploy
-          cp -r ./.next/static/. ./deplpy/.next/static
+          cp -r ./.next/static/. ./deploy/.next/static
       #3
       - name: Zip artifact for deployment
         run: zip release.zip ./deploy -r
@@ -67,4 +67,5 @@ jobs:
           package: release.zip #4
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_889C6339F01A42E0BAA626791C88D659 }}
+
 
