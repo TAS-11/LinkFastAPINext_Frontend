@@ -1,9 +1,8 @@
+"use client";
 import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
 import fetchCustomer from "./fetchCustomer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-"use client";
 import { Suspense } from "react";
 function ConfirmPageContent() {
   const customer_id = useSearchParams().get("customer_id");
