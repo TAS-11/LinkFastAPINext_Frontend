@@ -1,37 +1,61 @@
+// src/app/customers/create/confirm/page.jsx
+'use client';
 
-// src/app/customers/check/page.jsx
-import OneCustomerInfoCard from "@/app/components/one_customer_info_card.jsx";
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import OneCustomerInfoCard from '@/app/components/one_customer_info_card.jsx';
+import fetchCustomer from './fetchCustomer'; // customer_id を受け取り顧客情報を返す関数を想定
 
-export const dynamic = "force-dynamic";
+function ConfirmPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const customerId = searchParams.get('customer_id');
 
-// APIから顧客情報を取得
-async function fetchCustomer(id) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/customers?customer_id=${id}`,
-    { cache: "no-store" }
-  );
-  if (!res.ok) {
-    throw new Error("Failed to fetch customer");
-  }
-  return res.json();
-}
+  const [customerInfo, setCustomerInfo] = useState(null);
 
-// ✅ Server Component（"use client" は付けない）
-// ✅ Next.js 15: searchParams は await 推奨
-export default async function Page({ searchParams }) {
-  const sp = await searchParams;
-  const id = sp?.id;
+  useEffect(() => {
+    const run = async () => {
+      if (!customerId) return;
+      try {
+        const data = await fetchCustomer(customerId);
+        setCustomerInfo(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    run();
+  }, [customerId]);
 
-  if (!id) {
+  if (!customerId) {
     return (
       <div className="alert alert-warning p-4 text-center">
-        IDが指定されていません
+        customer_id が指定されていません
       </div>
     );
   }
 
-  const customerInfo = await fetchCustomer(id);
-
   return (
     <>
-      <OneCustomerInfoCard {...customerInfo} />
+      <div className="card bordered bg-white border-blue-200 border-2 max-w-sm m-4">
+        <div className="alert alert-success p-4 text-center">正常に作成しました</div>
+
+        {/* 取得済みならカードを表示 */}
+        {customerInfo && <OneCustomerInfoCard {...customerInfo} />}
+
+        <button onClick={() => router.push('/customers')}>
+          <div className="btn btn-primary m-4 text-2xl">戻る</div>
+        </button>
+      </div>
+    </>
+  );
+}
+
+export default function ConfirmPage() {
+  // useSearchParams を使う子は Suspense で包むのが安全
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ConfirmPageContent />
+    </Suspense>
+  );
+}
+
