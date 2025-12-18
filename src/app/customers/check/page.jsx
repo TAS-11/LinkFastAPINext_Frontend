@@ -16,3 +16,31 @@ async function fetchCustomer(id) {
 }
 
 // ✅ Server Component（"use client" は付けない）
+export default async function Page({ searchParams }) {
+  // Next.js 15 では searchParams は非同期扱いのため await 推奨
+  const sp = await searchParams;
+  const id = sp?.id;
+
+  if (!id) {
+    return (
+      <div className="alert alert-warning p-4 text-center">
+        IDが指定されていません
+      </div>
+    );
+  }
+
+  const customerInfo = await fetchCustomer(id);
+
+  return (
+    <>
+      <OneCustomerInfoCard {...customerInfo} />
+      <div className="mt-4">
+        {/* ✅ 開始タグを追加し、JSX の < と > を使用 */}
+        /customers
+          一覧に戻る
+        </a>
+      </div>
+    </>
+  );
+}
+``
